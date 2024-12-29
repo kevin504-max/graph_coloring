@@ -26,33 +26,38 @@ public class GraphColoring {
         int vertices = graph.getVertices();
         int[] result = new int[vertices];
         Arrays.fill(result, -1);
-
-        boolean[] available = new boolean[vertices];
     
+        boolean[] available = new boolean[vertices];
+        
         result[0] = 0;
-
+    
         for (int u = 1; u < vertices; u++) {
             Arrays.fill(available, true);
-
+    
             for (int adj : graph.getAdjacencyList(u)) {
                 if (result[adj] != -1) {
                     available[result[adj]] = false;
                 }
             }
-
+    
             int cr;
             for (cr = 0; cr < vertices; cr++) {
                 if (available[cr]) break;
             }
-
-            result [u] = cr;
+    
+            result[u] = cr;
         }
-
+    
+        System.out.println("\nGraph Coloring Results:");
+    
+        String[] colorCodes = {"\u001B[31m", "\u001B[32m", "\u001B[34m", "\u001B[33m", "\u001B[35m", "\u001B[36m"};
+        
         for (int u = 0; u < vertices; u++) {
-            System.out.println("Vertex " + u + " ---> Color " + result[u]);
+            String color = colorCodes[result[u] % colorCodes.length];
+            System.out.println("Vertex " + u + " ---> " + color + "Color " + result[u] + "\u001B[0m");
         }
-
+    
         int numColors = Arrays.stream(result).max().orElse(-1) + 1;
-        System.out.println("Number of colors used: " + numColors);
-    }
+        System.out.println("\nTotal number of colors used: " + numColors);
+    }    
 }
