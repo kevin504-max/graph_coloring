@@ -55,19 +55,19 @@ git clone https://github.com/kevin504-max/graph_coloring.git
 1. **Navegue até o diretório do projeto**:
 
 ```bash
-cd graph_coloring
+cd lib
 ```
 
 2. **Compilar os arquivos Java**:
 
 ```bash
-javac graphcoloring/*.java
+javac -d out src/graphcoloring/*.java
 ```
 
 3. **Executar o programa**:
 
 ```bash
-java graphcoloring.Main
+java -cp out graphcoloring.Main
 ```
 
 O programa solicitará que você forneça o número de vértices e arestas, e em seguida pedirá que insira os pares de vértices conectados pelas arestas. Após isso, o algoritmo de coloração será executado e o resultado será exibido no terminal.
