@@ -23,7 +23,7 @@ public class Main {
             int v = scanner.nextInt();
             graph.addEdge(u, v);
         }
-
+ 
         System.out.println("\n\u001B[32mGraph coloring using greedy algorithm:\u001B[0m");
         GraphColoring greedyColoring = new GraphColoring(graph);
         greedyColoring.colorGraph();
