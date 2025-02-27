@@ -1,33 +1,62 @@
 package graphcoloring;
 
+import java.util.Random;
 import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
 
-/**
- * Main class for testing the graph coloring implementation.
- * This program allows the user to input a graph and see the results of greedy coloring algorithm.
- */
 public class Main {
     public static void main(String[] args) {
+        // Scanner to read user input
         Scanner scanner = new Scanner(System.in);
-
-        System.out.println("\u001B[36mEnter the number of vertices in the graph:\u001B[0m");
+        
+        System.out.println("Enter the number of vertices in the graph:");
         int vertices = scanner.nextInt();
-        Graph graph = new Graph(vertices);
-
-        System.out.println("\u001B[36mEnter the number of edges in the graph:\u001B[0m");
+        
+        System.out.println("Enter the number of edges in the graph:");
         int edges = scanner.nextInt();
-
-        System.out.println("\u001B[36mEnter the edges (pair of vertices u v) in the graph:\u001B[0m");
-        for (int i = 0; i < edges; i++) {
-            int u = scanner.nextInt();
-            int v = scanner.nextInt();
-            graph.addEdge(u, v);
+        
+        // Validate if the number of edges is within the valid range
+        if (edges > (vertices * (vertices - 1)) / 2) {
+            System.out.println("Error: Too many edges for the given number of vertices.");
+            scanner.close();
+            return;
         }
- 
+        
+        Random random = new Random();
+        boolean[][] adjacencyMatrix = new boolean[vertices][vertices];
+        Graph graph = new Graph(vertices);
+        
+        try (FileWriter writer = new FileWriter("graph_instance.txt")) {
+            // Write number of vertices and edges to file
+            writer.write(vertices + "\n");
+            writer.write(edges + "\n");
+            
+            int count = 0;
+            while (count < edges) {
+                int u = random.nextInt(vertices);
+                int v = random.nextInt(vertices);
+                
+                // Ensure no self-loops and no duplicate edges
+                if (u != v && !adjacencyMatrix[u][v]) {
+                    adjacencyMatrix[u][v] = adjacencyMatrix[v][u] = true;
+                    writer.write(u + " " + v + "\n");
+                    graph.addEdge(u, v);
+                    count++;
+                }
+            }
+            
+            System.out.println("Graph instance successfully generated in 'graph_instance.txt'.");
+        } catch (IOException e) {
+            System.out.println("Error writing to file: " + e.getMessage());
+        }
+        
+        // Perform graph coloring using greedy algorithm
         System.out.println("\n\u001B[32mGraph coloring using greedy algorithm:\u001B[0m");
         GraphColoring greedyColoring = new GraphColoring(graph);
         greedyColoring.colorGraph();
-
+        
+        // Close scanner to prevent resource leak
         scanner.close();
     }
 }
