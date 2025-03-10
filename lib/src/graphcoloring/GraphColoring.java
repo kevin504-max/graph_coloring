@@ -23,29 +23,32 @@ public class GraphColoring {
      * Each vertex is assigned the smallest available color that has not been assigned to its neighbors. 
      */
     public void colorGraph () {
-        int vertices = graph.getVertices();
-        int[] result = new int[vertices];
-        Arrays.fill(result, -1);
+        int vertices = graph.getVertices(); // Obtêm o número de vértices do grafo
+        int[] result = new int[vertices]; // Array para armazenar as cores dos vértices
+        Arrays.fill(result, -1); // Inicializa todas as posições do array com -1
     
-        boolean[] available = new boolean[vertices];
+        boolean[] available = new boolean[vertices]; // Array para armazenar as cores disponíveis e verificar qual está disponível em cada iteração
         
-        result[0] = 0;
+        result[0] = 0; // Atribui a cor 0 ao primeiro vértice
     
-        for (int u = 1; u < vertices; u++) {
-            Arrays.fill(available, true);
+        // Itera sobre os vértices do grafo a partir do segundo vértice, pois o primeiro já foi colorido
+        for (int u = 1; u < vertices; u++) { 
+            Arrays.fill(available, true); // Inicializa o array de cores disponíveis com true
     
+            // Verifica os vértices adjacentes ao vértice atual e marca as cores já utilizadas
             for (int adj : graph.getAdjacencyList(u)) {
-                if (result[adj] != -1) {
-                    available[result[adj]] = false;
+                if (result[adj] != -1) { // Se o vértice adjacente já foi colorido, marca a cor como indisponível
+                    available[result[adj]] = false; // Torna a cor como indisponível
                 }
             }
     
+            // Encontra a primeira cor disponível para o vértice atual
             int cr;
             for (cr = 0; cr < vertices; cr++) {
-                if (available[cr]) break;
+                if (available[cr]) break; // Se a cor estiver disponível, sai do loop
             }
     
-            result[u] = cr;
+            result[u] = cr; // Atribui a cor encontrada ao vértice atual
         }
     
         System.out.println("\nGraph Coloring Results:");
